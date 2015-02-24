@@ -1,0 +1,84 @@
+html {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    min-height: 100%;
+}
+
+.row.main {
+    position: absolute;
+    top: 0;
+    bottom: 200px;
+    left: 0;
+    right: 15px;
+}
+
+.logs {
+    position: relative;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.sidebar {
+    position: fixed;
+    overflow-y: auto;
+    top: 0;
+    bottom: 200px;
+}
+
+.row.footer {
+    position: absolute;
+    height: 200px;
+    bottom: 0;
+    left: 0;
+    right: 15px;
+    background: lightgray;
+}
+
+/* The code textarea */
+.CodeMirror {
+    height: 130px;
+}
+
+.pane {
+    height: 100%;
+}
+
+.rule-list {
+    position: relative;
+    height: 100%;
+}
+
+.rule-list .items {
+    height: 70%;
+    overflow-y: auto;
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    right: 45px;
+}
+
+.rule-list .buttons {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    width: 40px;
+}
+
+.rule-list .persistence-buttons {
+    position: absolute;
+    top: 75%;
+}
+
+ul.nav>li>a {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 20px;
+    border: none;
+}
+
+ul.nav > li > a.list-group-item {
+    border-radius: 0;
+}
