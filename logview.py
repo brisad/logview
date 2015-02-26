@@ -10,9 +10,14 @@ import os.path
 from socketio import socketio_manage
 from socketio.server import SocketIOServer
 from socketio.namespace import BaseNamespace
+import select
 
 from backend.userdata import read_user_data, write_user_data
 
+# Arbitrarily chosen max amount of lines that can be sent in one
+# websocket message.  Too many messages in short succession slows
+# everything down a lot.
+MAX_LINES_IN_ONE_GO = 1000
 
 # Global initialized at program startup
 user_data_file = None
@@ -27,15 +32,30 @@ class GlobalNamespace(BaseNamespace):
         write_user_data(user_data_file,
                         data['columns'], data['parse_line'], rules)
 
+    @staticmethod
+    def stdin_has_data():
+        return select.select([sys.stdin], [], [], 0.0)[0]
+
     def on_need_logs(self):
-        def repeat():
-            while True:
+        def emit_from_stdin():
+            eof = False
+            while not eof:
                 gevent.socket.wait_read(sys.stdin.fileno())
-                line = sys.stdin.readline()
-                if not line:
-                    break
-                self.emit('streaming logs', line.rstrip("\n"))
-        self.spawn(repeat)
+
+                # gevent has told us we have data waiting, now collect
+                # as much as allowed
+                lines = []
+                while (self.stdin_has_data() and
+                       len(lines) < MAX_LINES_IN_ONE_GO):
+                    line = sys.stdin.readline()
+                    if not line:
+                        eof = True
+                        break
+                    lines.append(line.rstrip("\n"))
+
+                self.emit('loglines', lines)
+
+        self.spawn(emit_from_stdin)
 
 
 class Application(object):

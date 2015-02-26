@@ -4,15 +4,17 @@ var DataSource = (function () {
   return {
     listenForLogs: function (parseLine, callback, errorCallback) {
       socket.emit('need logs');
-      socket.on('streaming logs', function (line) {
-        try {
-          var message = parseLine(line);
-        } catch (ex) {
-          errorCallback(line, ex);
-          return;
-        }
-        message.id = _idCounter++;
-        callback(message);
+      socket.on('loglines', function (lines) {
+        lines.forEach(function (line) {
+          try {
+            var message = parseLine(line);
+          } catch (ex) {
+            errorCallback(line, ex);
+            return;
+          }
+          message.id = _idCounter++;
+          callback(message);
+        });
       });
     }
   };
