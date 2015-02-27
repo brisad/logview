@@ -19,13 +19,17 @@ var LogViewer = React.createClass({
   componentDidMount: function () {
     this.setState({rules: this.props.rules});
 
-    DataSource.listenForLogs(this.props.parseLine, function (message) {
-      this.setState({logs: this.state.logs.concat([message])});
-    }.bind(this),
-                             function (line, exception) {
-                               // this.setState({logs: this.state.logs.concat({ invalid: true, line: line, exception: exception })});
-                               // Ignore
-                             }.bind(this));
+    DataSource.listenForLogs(
+      this.props.parseLine,
+
+      function (message) {
+        this.setState({logs: this.state.logs.concat([message])});
+      }.bind(this),
+
+      function (line, exception) {
+        alert("Exception raised for line: " + line + "\n\n" + exception);
+        // this.setState({logs: this.state.logs.concat({ invalid: true, line: line, exception: exception })});
+      }.bind(this));
   },
 
   handleEnableRule: function (index, enabled) {
