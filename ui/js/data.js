@@ -5,6 +5,12 @@ var DataSource = (function () {
     listenForLogs: function (parseLine, callback, errorCallback) {
       socket.emit('need logs');
       socket.on('loglines', function (lines) {
+
+        // List of messages to pass to the callback
+        var messages = [];
+
+        // Parse each line we get and append it to the list of
+        // messages.  Any error will be passed to the error callback.
         lines.forEach(function (line) {
           var message;
           try {
@@ -20,8 +26,10 @@ var DataSource = (function () {
           }
 
           message.id = _idCounter++;
-          callback(message);
+          messages.push(message);
         });
+
+        callback(messages);
       });
     }
   };

@@ -14,6 +14,7 @@ import select
 
 from backend.userdata import read_user_data, write_user_data
 
+
 # Arbitrarily chosen max amount of lines that can be sent in one
 # websocket message.  Too many messages in short succession slows
 # everything down a lot.
@@ -114,6 +115,7 @@ def main():
     SocketIOServer(('0.0.0.0', 8080), Application(),
                    resource='socket.io', policy_server=False).serve_forever()
     return 0
+
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -22,8 +22,8 @@ var LogViewer = React.createClass({
     DataSource.listenForLogs(
       this.props.parseLine,
 
-      function (message) {
-        this.setState({logs: this.state.logs.concat([message])});
+      function (messages) {
+        this.setState({logs: this.state.logs.concat(messages)});
       }.bind(this),
 
       function (line, exception) {
