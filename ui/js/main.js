@@ -141,9 +141,10 @@ var Navigation = React.createClass({
         cls += " list-group-item-" + nav.level;
       }
 
+      var target = "#msg-" + nav.target;
       return (
-        <li>
-          <a href={"#msg-" + nav.target} className={cls}>
+        <li key={target}>
+          <a href={target} className={cls}>
             {nav.caption}
           </a>
         </li>
@@ -161,7 +162,7 @@ var Navigation = React.createClass({
 var Logs = React.createClass({
   render: function () {
     var tableHeads = this.props.columns.map(function (column) {
-      return <th>{column}</th>;
+      return <th key={"column-" + column}>{column}</th>;
     });
 
     var logMessages = this.props.data.map(function (message, i) {
@@ -205,7 +206,7 @@ var LogMessage = React.createClass({
 
   render: function () {
     var tableData = this.props.columns.map(function (column) {
-      return <td>{this.props.data[column]}</td>;
+      return <td key={column}>{this.props.data[column]}</td>;
     }, this);
 
     return (
@@ -329,6 +330,7 @@ var Pane = React.createClass({
       return (
         <RuleSelection
           ruleName={rule.name}
+          key={index}
           index={index}
           isChecked={!('disabled' in rule)}
           isSelected={this.state.selected == index}
