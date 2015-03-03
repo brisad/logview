@@ -168,7 +168,7 @@ var Logs = React.createClass({
     var logMessages = this.props.data.map(function (message, i) {
       if (message.annotation) {
         return (
-          <tr id={"msg-" + message.id}>
+          <tr key={message.id} id={"msg-" + message.id}>
             <td colSpan={this.props.columns.length}>
               <div className={"alert alert-" + message.level}>
                 {message.text}
